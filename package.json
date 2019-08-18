@@ -1,0 +1,20 @@
+{
+  "name": "markdown-editor",
+  "version": "1.0.0",
+  "description": "Simple markdown editor in React with Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wglugla/markdown-editor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wglugla/markdown-editor/issues"
+  },
+  "homepage": "https://github.com/wglugla/markdown-editor#readme"
+}
