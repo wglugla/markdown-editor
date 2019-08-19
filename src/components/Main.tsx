@@ -1,6 +1,14 @@
-import React, { Component } from 'react'
-import Editor from './Editor'
-import Preview from './Preview'
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Editor from './Editor';
+import Preview from './Preview';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 80vh;
+  padding: 0 2rem;
+`
 
 interface Props {
   
@@ -16,10 +24,10 @@ export default class Main extends Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <Container>
         <Editor changeBuffer={this.changeBuffer}/>
         <Preview value={this.state.buffer}/>
-      </div>
+      </Container>
     )
   }
 

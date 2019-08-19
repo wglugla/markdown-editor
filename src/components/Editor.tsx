@@ -1,4 +1,16 @@
 import React, { Component } from 'react';
+import styled from 'styled-components'
+
+const StyledForm = styled.form`
+    width: 48%;
+    height: 100%;
+`
+const StyledTextarea = styled.textarea`
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+`
 
 interface Props {
     changeBuffer: any
@@ -12,9 +24,9 @@ export default class Editor extends Component<Props, State> {
 
     render() {
         return (
-            <form>
-                <textarea value={this.state.value} onChange={this.handleChange} />
-            </form>
+            <StyledForm>
+                <StyledTextarea value={this.state.value} onChange={this.handleChange} />
+            </StyledForm>
         );
     }
 
