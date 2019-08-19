@@ -13,7 +13,7 @@ const StyledTextarea = styled.textarea`
 `
 
 interface Props {
-    changeBuffer: any
+    changeBuffer: (newContent: string) => void
 }
 interface State {}
 
