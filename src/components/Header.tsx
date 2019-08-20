@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const StyledHeader = styled.header`
@@ -25,26 +25,17 @@ const StyledLink = styled.a`
   color: #3c55dc;
 `
 
-interface Props {
-  
-}
-interface State {
-  
-}
 
-export default class Header extends Component<Props, State> {
-  state = {}
-  render() {
-    return (
-      <StyledHeader>
-        <StyledTitle> Markdown-editor using React with Typescript </StyledTitle>
-        <StyledList>
-          <li>
-            <StyledLink href="https://github.com/wglugla"> My Github Account </StyledLink>
-            <StyledLink href="https://github.com/wglugla/markdown-editor"> Repository </StyledLink>
-          </li>
-        </StyledList>
-      </StyledHeader>
-    )
-  }
+export default function Header({ }) {
+  return (
+    <StyledHeader>
+      <StyledTitle> Markdown-editor using React with Typescript </StyledTitle>
+      <StyledList>
+        <li>
+          <StyledLink href="https://github.com/wglugla"> My Github Account </StyledLink>
+          <StyledLink href="https://github.com/wglugla/markdown-editor"> Repository </StyledLink>
+        </li>
+      </StyledList>
+    </StyledHeader>
+  )
 }

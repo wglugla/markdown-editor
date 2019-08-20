@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import marked from 'marked'
 import styled from 'styled-components'
 
@@ -11,24 +11,19 @@ const PreviewView = styled.div`
   box-sizing: border-box;
 `
 
-interface Props {
+export interface Props {
   value: string
 }
-interface State {
-  
-}
 
-export default class Preview extends Component<Props, State> {
-  state = {}
-
-  render() {
-    return (
-      <PreviewView dangerouslySetInnerHTML={this.getMarkdownFromInput()} />
-    )
+export default function Preview(props: Props) {
+  const getMarkdownFromInput = () => {
+    let rawMarkup = marked(props.value);
+    return { __html: rawMarkup };
   }
 
-  getMarkdownFromInput = () => {
-    let rawMarkup = marked(this.props.value);
-    return { __html: rawMarkup};
-  }
+  return (
+    <PreviewView dangerouslySetInnerHTML={getMarkdownFromInput()} />
+  )
+
+
 }

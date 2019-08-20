@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor';
 import Preview from './Preview';
@@ -10,28 +10,18 @@ const Container = styled.div`
   padding: 0 2rem;
 `
 
-interface Props {
-  
-}
-interface State {
-  
-}
+export default function Main({ }) {
+  const [buffer, setBuffer] = useState(`Preview here!`);
 
-export default class Main extends Component<Props, State> {
-  state = {
-    buffer: `Preview here!`
+  const changeBuffer = (newBuffer: string) => {
+    setBuffer(newBuffer);
   }
+  return (
+    <Container>
+      <Editor changeBuffer={changeBuffer} />
+      <Preview value={buffer} />
+    </Container>
+  )
 
-  render() {
-    return (
-      <Container>
-        <Editor changeBuffer={this.changeBuffer}/>
-        <Preview value={this.state.buffer}/>
-      </Container>
-    )
-  }
 
-  changeBuffer = (newBuffer: string) => {
-    this.setState({buffer: newBuffer})
-  }
 }
