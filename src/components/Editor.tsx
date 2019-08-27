@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
-    width: 48%;
+    width: 50%;
     height: 100%;
 `;
 const StyledTextarea = styled.textarea`
@@ -10,6 +10,9 @@ const StyledTextarea = styled.textarea`
     height: 100%;
     padding: 1rem;
     box-sizing: border-box;
+    background-color: #1E2126;
+    color: #abb2bf;
+    overflow-y: scroll;;
 `;
 
 export interface Props {

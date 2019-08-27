@@ -4,7 +4,15 @@ import styled from 'styled-components'
 const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
-  padding: 2rem;
+  align-items: center;
+  height: 7vh;
+  box-sizing: border-box;
+  padding: .5em .2rem;
+  font-size: .8em;
+  color: #000000;
+  background: #F8F8F8;
+  box-shadow: 0px 6px 15px -3px rgba(0,0,0,0.2);
+  z-index: 2;
 `
 
 const StyledList = styled.ul`
@@ -15,14 +23,16 @@ const StyledList = styled.ul`
 
 const StyledTitle = styled.h1`
   font-size: 1.2em;
-  margin: 0;
+  margin: 0 0 0 2rem;
   padding: 0;
 `
 
 const StyledLink = styled.a`
   margin: .5rem;
   padding: 1rem 2rem;
-  color: #3c55dc;
+  color: #000000;
+  font-size: 1.1em;
+  font-weight: 500;
 `
 
 

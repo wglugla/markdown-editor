@@ -3,12 +3,14 @@ import marked from 'marked'
 import styled from 'styled-components'
 
 const PreviewView = styled.div`
-  width: 48%;
+  width: 50%;
   height: 100%;
-  background-color: #f3f3f3;
   padding: 1rem;
   overflow-wrap: break-word;
   box-sizing: border-box;
+  font-size: 12px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 `
 
 export interface Props {

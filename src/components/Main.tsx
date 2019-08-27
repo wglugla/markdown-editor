@@ -6,12 +6,12 @@ import Preview from './Preview';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 80vh;
-  padding: 0 2rem;
+  height: 93vh;
+  overflow-y: hidden;
 `
 
 export default function Main({ }) {
-  const [buffer, setBuffer] = useState(`Preview here!`);
+  const [buffer, setBuffer] = useState(``);
 
   const changeBuffer = (newBuffer: string) => {
     setBuffer(newBuffer);
