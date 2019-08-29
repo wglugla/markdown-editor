@@ -36,7 +36,7 @@ const StyledLink = styled.a`
 `
 
 
-export default function Header({ }) {
+export default function Header() {
   return (
     <StyledHeader>
       <StyledTitle> Markdown-editor using React with Typescript </StyledTitle>

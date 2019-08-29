@@ -10,7 +10,7 @@ const Container = styled.div`
   overflow-y: hidden;
 `
 
-export default function Main({ }) {
+export default function Main() {
   const [buffer, setBuffer] = useState(``);
 
   const changeBuffer = (newBuffer: string) => {
