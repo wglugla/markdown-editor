@@ -6,7 +6,7 @@ import Preview from './Preview/index';
 const Container = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 93vh;
+    height: 90vh;
     overflow-y: hidden;
 `;
 

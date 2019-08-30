@@ -4,14 +4,14 @@ export const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 7vh;
+    height: 10vh;
     box-sizing: border-box;
     padding: 0.5em 0.2rem;
     font-size: 0.8em;
-    color: #000000;
-    background: #f8f8f8;
+    color: #ffffff;
+    background: #21304a;
     box-shadow: 0px 6px 15px -3px rgba(0, 0, 0, 0.2);
-    z-index: 2;
+    z-index: 100;
 `;
 
 export const StyledList = styled.ul`
@@ -29,7 +29,7 @@ export const StyledTitle = styled.h1`
 export const StyledLink = styled.a`
     margin: 0.5rem;
     padding: 1rem 2rem;
-    color: #000000;
+    color: #ffffff;
     font-size: 1.1em;
     font-weight: 500;
 `;
