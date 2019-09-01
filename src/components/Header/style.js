@@ -10,7 +10,7 @@ export const StyledHeader = styled.header`
     font-size: 0.8em;
     color: #ffffff;
     background: #21304a;
-    box-shadow: 0px 6px 15px -3px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0px 6px 15px -3px rgba(0, 0, 0, 0.2); */
     z-index: 100;
 `;
 

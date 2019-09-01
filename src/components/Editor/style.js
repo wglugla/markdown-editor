@@ -9,7 +9,7 @@ export const StyledForm = styled.form`
 export const StyledTextarea = styled.textarea`
     width: 100%;
     height: 100%;
-    padding: 1rem;
+    padding: 2rem;
     box-sizing: border-box;
     background-color: #1e2126;
     color: #abb2bf;

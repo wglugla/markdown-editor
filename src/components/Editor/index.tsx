@@ -66,7 +66,6 @@ export default function Editor(props: Props) {
     let timer: number;
 
     const handleScroll = (event: React.UIEvent<HTMLTextAreaElement>) => {
-        console.log('scroll');
         const { scrollTop } = event.currentTarget;
         if (timer) {
             clearTimeout(timer);

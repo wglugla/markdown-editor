@@ -5,7 +5,7 @@ export const ToolsCase = styled.div`
     height: 5vh;
     padding: 0 1rem;
     box-sizing: border-box;
-    background: #ffffff;
+    background: #e7e7e7;
     display: flex;
     align-items: center;
     flex-direction: row;
