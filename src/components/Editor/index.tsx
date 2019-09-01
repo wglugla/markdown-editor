@@ -40,11 +40,11 @@ export default function Editor(props: Props) {
         setCursorPosition(selectionStart);
     };
 
-    const addStyle = (styleFormat: string) => {
+    const addStyle = (styleFormat: string, cursorBackNumber: number) => {
         let front = value.substr(0, cursorPosition);
         let back = value.substr(cursorPosition, value.length);
         setValue(`${front}${styleFormat} ${back}`);
-        setHalfStyleLength(styleFormat.length / 2);
+        setHalfStyleLength(cursorBackNumber);
     };
     const handleCursorMove = (event: React.FormEvent<HTMLTextAreaElement>) => {
         const { selectionStart } = event.currentTarget;

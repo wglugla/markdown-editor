@@ -5,12 +5,13 @@ interface Props {
     content: string;
     styleFunction: Function;
     icon: string;
+    cursonBackNumber: number;
 }
 
 export default function Tool(props: Props) {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        props.styleFunction(props.content);
+        props.styleFunction(props.content, props.cursonBackNumber);
     };
 
     return (
