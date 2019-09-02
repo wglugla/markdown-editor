@@ -4,13 +4,12 @@ import { PreviewView } from './style';
 
 export interface Props {
     value: string;
-    distanceFromTop: Number;
+    distanceFromTop: number;
     changeScrollTop: Dispatch<SetStateAction<number>>;
 }
 
 export default function Preview(props: Props) {
-    const [scrollTop, setScrollTop] = useState(0);
-    const [itemRefs, setItemRefs] = useState(new Array());
+    const [itemRefs] = useState<HTMLDivElement[]>([]);
 
     useEffect(() => {
         itemRefs[0].scrollTop = props.distanceFromTop;
@@ -22,9 +21,7 @@ export default function Preview(props: Props) {
     };
 
     function inputRef(ref: HTMLDivElement) {
-        let items = itemRefs;
-        items.push(ref);
-        setItemRefs(items);
+        itemRefs.push(ref);
     }
 
     let timer: number;
