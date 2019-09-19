@@ -1,6 +1,6 @@
-import marked from 'marked';
+import ReactMarkdown from 'react-markdown';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { PreviewView } from './style';
+import { PreviewView, StyledInlineCode } from './style';
 
 export interface Props {
     value: string;
@@ -14,11 +14,6 @@ export default function Preview(props: Props) {
     useEffect(() => {
         itemRefs[0].scrollTop = props.distanceFromTop;
     }, [props.distanceFromTop]);
-
-    const getMarkdownFromInput = () => {
-        let rawMarkup = marked(props.value);
-        return { __html: rawMarkup };
-    };
 
     function inputRef(ref: HTMLDivElement) {
         itemRefs.push(ref);
@@ -36,5 +31,9 @@ export default function Preview(props: Props) {
         }, 20);
     };
 
-    return <PreviewView ref={inputRef} dangerouslySetInnerHTML={getMarkdownFromInput()} onScroll={handleScroll} />;
+    return (
+        <PreviewView ref={inputRef} onScroll={handleScroll}>
+            <ReactMarkdown source={props.value} renderers={{ inlineCode: StyledInlineCode }} />
+        </PreviewView>
+    );
 }
