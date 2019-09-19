@@ -20,3 +20,9 @@ export const PreviewView = styled.div`
         background: #e7e7e7;
     }
 `;
+
+export const StyledInlineCode = styled.code`
+    display: inline;
+    padding: 0.2rem 0.5rem;
+    color: #333333;
+`;
