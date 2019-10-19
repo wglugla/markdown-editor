@@ -1,6 +1,6 @@
 import React from 'react';
-import Tool from './Tool';
-import { ToolsCase } from './style';
+import Tool from './Tool/Tool';
+import { ToolsCase } from './ToolsStyle';
 
 import iconBold from '../../assets/images/001-bold-text-option.svg';
 import iconItalic from '../../assets/images/002-italicize-text.svg';
@@ -12,7 +12,6 @@ import iconList from '../../assets/images/007-list.svg';
 import iconNumberedList from '../../assets/images/008-numbered-list.svg';
 import iconChecklist from '../../assets/images/009-check.svg';
 import iconChainLink from '../../assets/images/010-chain-links.svg';
-import iconFrame from '../../assets/images/011-frame-landscape.svg';
 
 interface Props {
     addStyle: Function;

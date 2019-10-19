@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import Tools from '../Tools';
-import { StyledForm, StyledTextarea } from './style';
+import Tools from '../Tools/Tools';
+import { StyledForm, StyledTextarea } from './EditorStyle';
 
 export interface Props {
     changeBuffer: (newContent: string) => void;
@@ -8,30 +8,60 @@ export interface Props {
     changeScrollTop: Dispatch<SetStateAction<number>>;
 }
 
+export interface RefProps {
+    editorContent: string;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onKeyDown: (event: React.FormEvent<HTMLTextAreaElement>) => void;
+    onMouseUp: (event: React.FormEvent<HTMLTextAreaElement>) => void;
+    onBlur: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+    onScroll: (event: React.UIEvent<HTMLTextAreaElement>) => void;
+}
+
+const Textarea = React.forwardRef((props: RefProps, ref: any) => {
+    return (
+        <StyledTextarea
+            ref={ref}
+            autoFocus
+            value={props.editorContent}
+            onBlur={props.onBlur}
+            onChange={props.onChange}
+            onKeyDown={props.onKeyDown}
+            onMouseUp={props.onMouseUp}
+            onScroll={props.onScroll}
+        />
+    );
+});
+
 export default function Editor(props: Props) {
-    const [value, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
+    const [editorContent, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
-
+    /*eslint no-array-constructor: "ignore"*/
     const [itemRefs, setItemRefs] = useState(new Array());
 
     const [halfStyleLength, setHalfStyleLength] = useState(0);
 
     useEffect(() => {
-        itemRefs[0].scrollTop = 0;
-    }, []);
+        if (itemRefs[0]) {
+            itemRefs[0].scrollTop = 0;
+        }
+    }, [itemRefs]);
 
     useEffect(() => {
-        itemRefs[0].scrollTop = props.distanceFromTop;
-    }, [props.distanceFromTop]);
+        if (itemRefs[0]) {
+            itemRefs[0].scrollTop = props.distanceFromTop;
+        }
+    }, [props.distanceFromTop, itemRefs]);
 
     useEffect(() => {
-        localStorage.setItem('markdownEditorContent', value);
-        props.changeBuffer(value);
+        localStorage.setItem('markdownEditorContent', editorContent);
+        props.changeBuffer(editorContent);
         let currentPosition = cursorPosition + halfStyleLength;
-        itemRefs[0].setSelectionRange(currentPosition, currentPosition);
+        if (itemRefs[0]) {
+            itemRefs[0].setSelectionRange(currentPosition, currentPosition);
+        }
         setHalfStyleLength(0);
-    }, [value]);
+    }, [editorContent, itemRefs, cursorPosition, halfStyleLength, props]);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let { value, selectionStart } = event.target;
@@ -41,8 +71,8 @@ export default function Editor(props: Props) {
     };
 
     const addStyle = (styleFormat: string, cursorBackNumber: number) => {
-        let front = value.substr(0, cursorPosition);
-        let back = value.substr(cursorPosition, value.length);
+        let front = editorContent.substr(0, cursorPosition);
+        let back = editorContent.substr(cursorPosition, editorContent.length);
         setValue(`${front}${styleFormat} ${back}`);
         setHalfStyleLength(cursorBackNumber);
     };
@@ -75,14 +105,12 @@ export default function Editor(props: Props) {
         }, 20);
     };
 
-    const changeOnScroll = (position: number) => {};
-
     return (
         <StyledForm>
             <Tools addStyle={addStyle} />
             <Textarea
                 ref={inputRef}
-                value={value}
+                editorContent={editorContent}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onKeyDown={handleCursorMove}
@@ -92,27 +120,3 @@ export default function Editor(props: Props) {
         </StyledForm>
     );
 }
-
-export interface RefProps {
-    value: string;
-    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    onKeyDown: (event: React.FormEvent<HTMLTextAreaElement>) => void;
-    onMouseUp: (event: React.FormEvent<HTMLTextAreaElement>) => void;
-    onBlur: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
-    onScroll: (event: React.UIEvent<HTMLTextAreaElement>) => void;
-}
-
-const Textarea = React.forwardRef((props: RefProps, ref: any) => {
-    return (
-        <StyledTextarea
-            ref={ref}
-            autoFocus
-            value={props.value}
-            onBlur={props.onBlur}
-            onChange={props.onChange}
-            onKeyDown={props.onKeyDown}
-            onMouseUp={props.onMouseUp}
-            onScroll={props.onScroll}
-        />
-    );
-});

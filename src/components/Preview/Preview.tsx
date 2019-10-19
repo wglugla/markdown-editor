@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { PreviewView, StyledInlineCode } from './style';
+import { PreviewView, StyledInlineCode } from './PreviewStyle';
 
 export interface Props {
     value: string;
@@ -12,8 +12,10 @@ export default function Preview(props: Props) {
     const [itemRefs] = useState<HTMLDivElement[]>([]);
 
     useEffect(() => {
-        itemRefs[0].scrollTop = props.distanceFromTop;
-    }, [props.distanceFromTop]);
+        if (itemRefs[0]) {
+            itemRefs[0].scrollTop = props.distanceFromTop;
+        }
+    }, [props.distanceFromTop, itemRefs]);
 
     function inputRef(ref: HTMLDivElement) {
         itemRefs.push(ref);

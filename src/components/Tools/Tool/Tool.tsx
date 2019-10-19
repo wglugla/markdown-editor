@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, StyledButton } from './style';
+import { Icon, StyledButton } from './ToolStyle';
 
 interface Props {
     content: string;
