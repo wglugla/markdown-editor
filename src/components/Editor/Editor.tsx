@@ -20,7 +20,7 @@ export interface RefProps {
 }
 
 const StyledForm = styled.form<{ block: boolean }>`
-    display: ${props => (props.block ? 'block' : 'none')}
+    display: ${props => (props.block ? 'block' : 'none')};
     background: gray;
     width: 100%;
     overflow: hidden;
@@ -60,10 +60,8 @@ export default function Editor(props: Props) {
     }, [itemRefs]);
 
     useEffect(() => {
-        if (itemRefs[0]) {
-            itemRefs[0].scrollTop = props.distanceFromTop;
-        }
-    }, [props.distanceFromTop, itemRefs]);
+        itemRefs[0].scrollTop = props.distanceFromTop;
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('markdownEditorContent', editorContent);
@@ -105,16 +103,9 @@ export default function Editor(props: Props) {
         event.currentTarget.setSelectionRange(currentPosition, currentPosition);
     };
 
-    let timer: number;
-
     const handleScroll = (event: React.UIEvent<HTMLTextAreaElement>) => {
         const { scrollTop } = event.currentTarget;
-        if (timer) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-            props.changeScrollTop(scrollTop);
-        }, 20);
+        props.changeScrollTop(scrollTop);
     };
 
     const context = useContext(ModeContext);

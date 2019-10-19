@@ -22,6 +22,7 @@ const StyledToggler = styled.button`
     border: none;
     font-weight: 600;
     z-index: 100;
+    background: #ffffff;
     cursor: pointer;
     :hover,
     :focus {
