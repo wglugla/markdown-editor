@@ -1,6 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState, useContext } from 'react';
 import Tools from '../Tools/Tools';
-import { StyledForm, StyledTextarea } from './EditorStyle';
+import { StyledTextarea } from './EditorStyle';
+import { ModeContext } from '../../shared/ModeContext';
+import styled from 'styled-components';
 
 export interface Props {
     changeBuffer: (newContent: string) => void;
@@ -16,6 +18,16 @@ export interface RefProps {
     onBlur: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
     onScroll: (event: React.UIEvent<HTMLTextAreaElement>) => void;
 }
+
+const StyledForm = styled.form<{ block: boolean }>`
+    display: ${props => (props.block ? 'block' : 'none')}
+    background: gray;
+    width: 100%;
+    overflow: hidden;
+    @media (min-width: 900px) {
+        width: 50%;
+    }
+`;
 
 const Textarea = React.forwardRef((props: RefProps, ref: any) => {
     return (
@@ -36,7 +48,7 @@ export default function Editor(props: Props) {
     const [editorContent, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
-    /*eslint no-array-constructor: "ignore"*/
+    /*eslint no-array-constructor: 0*/
     const [itemRefs, setItemRefs] = useState(new Array());
 
     const [halfStyleLength, setHalfStyleLength] = useState(0);
@@ -105,8 +117,10 @@ export default function Editor(props: Props) {
         }, 20);
     };
 
+    const context = useContext(ModeContext);
+
     return (
-        <StyledForm>
+        <StyledForm block={context.editorDisplay}>
             <Tools addStyle={addStyle} />
             <Textarea
                 ref={inputRef}
