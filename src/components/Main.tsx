@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Editor from './Editor/index';
-import Preview from './Preview/index';
+import Editor from './Editor/Editor';
+import Preview from './Preview/Preview';
 
 const Container = styled.div`
     display: flex;

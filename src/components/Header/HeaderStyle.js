@@ -4,13 +4,12 @@ export const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 10vh;
+    height: 7vh;
     box-sizing: border-box;
     padding: 0.5em 0.2rem;
-    font-size: 0.8em;
+    font-size: 0.7em;
     color: #ffffff;
-    background: #21304a;
-    /* box-shadow: 0px 6px 15px -3px rgba(0, 0, 0, 0.2); */
+    background: #246177;
     z-index: 100;
 `;
 
