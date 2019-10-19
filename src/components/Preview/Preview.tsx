@@ -5,33 +5,23 @@ import styled from 'styled-components';
 import { ModeContext } from '../../shared/ModeContext';
 
 const PreviewView = styled.div<{ block: boolean }>`
-    display: ${props => (props.block ? 'block' : 'none')};
-    width: 100%;
+    visibility: ${props => (props.block ? 'visible' : 'hidden')};
+    width: ${props => (props.block ? '100%' : '0%')};
     height: 100%;
-    padding: 3rem 2rem;
+    padding: ${props => (props.block ? '1rem 2rem' : '0')};
     overflow-wrap: break-word;
     box-sizing: border-box;
     font-size: 12px;
+    position: relative;
     overflow-x: hidden;
     overflow-y: scroll;
-    position: relative;
-
+    img {
+        max-width: 100%;
+    }
     @media (min-width: 900px) {
-        display: block;
+        visibility: visible;
         width: 50%;
-        ::before {
-            content: 'Preview';
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            align-items: center;
-            padding-left: 2rem;
-            color: #222222;
-            width: 100%;
-            height: 5vh;
-            background: #ffffff;
-        }
+        padding: 1rem 2rem;
     }
 `;
 
@@ -45,31 +35,18 @@ export default function Preview(props: Props) {
     const [itemRefs] = useState<HTMLDivElement[]>([]);
 
     useEffect(() => {
-        if (itemRefs[0]) {
-            itemRefs[0].scrollTop = props.distanceFromTop;
-        }
-    }, [props.distanceFromTop, itemRefs]);
+        console.log(props.distanceFromTop);
+        itemRefs[0].scrollTop = props.distanceFromTop;
+    }, [props.distanceFromTop]);
 
     function inputRef(ref: HTMLDivElement) {
         itemRefs.push(ref);
     }
 
-    let timer: number;
-
-    const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-        const { scrollTop } = event.currentTarget;
-        if (timer) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-            props.changeScrollTop(scrollTop);
-        }, 20);
-    };
-
     const context = useContext(ModeContext);
 
     return (
-        <PreviewView block={context.previewDisplay} ref={inputRef} onScroll={handleScroll}>
+        <PreviewView block={context.previewDisplay} ref={inputRef}>
             <ReactMarkdown source={props.value} renderers={{ inlineCode: StyledInlineCode }} />
         </PreviewView>
     );
