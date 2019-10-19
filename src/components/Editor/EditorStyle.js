@@ -8,12 +8,3 @@ export const StyledTextarea = styled.textarea`
     background-color: #1e2126;
     color: #abb2bf;
 `;
-
-export const StyledForm = styled.form`
-    background: gray;
-    width: 100%;
-    overflow: hidden;
-    @media (min-width: 900px) {
-        width: 50%;
-    }
-`;
