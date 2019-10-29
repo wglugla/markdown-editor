@@ -35,7 +35,6 @@ export default function Preview(props: Props) {
     const [itemRefs] = useState<HTMLDivElement[]>([]);
 
     useEffect(() => {
-        console.log(props.distanceFromTop);
         itemRefs[0].scrollTop = props.distanceFromTop;
     }, [props.distanceFromTop]);
 
