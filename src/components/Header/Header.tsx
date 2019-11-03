@@ -4,7 +4,7 @@ import { StyledHeader, StyledTitle, StyledLogo, LogoContainer } from './HeaderSt
 import Logo from '../../assets/images/markdown.png';
 
 interface Props {
-    setLoginStatus: (value: boolean) => void;
+    setLoginStatus: (value: boolean, id: string) => void;
 }
 
 export default function Header(props: Props) {

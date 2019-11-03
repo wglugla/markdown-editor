@@ -3,6 +3,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
 import LoginContext from '../../shared/loginContext';
 import styled from 'styled-components';
+import UserMenu from '../UserMenu/UserMenu';
 
 const StyledButton = styled.button`
     font-family: 'Roboto', sans-serif;
@@ -21,8 +22,13 @@ const StyledButton = styled.button`
     cursor: pointer;
 `;
 
+const StyledMenu = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 interface Props {
-    setLoginStatus: (value: boolean) => void;
+    setLoginStatus: (value: boolean, id: string) => void;
 }
 
 const uiConfig = {
@@ -46,21 +52,28 @@ if (!firebase.apps.length) {
 }
 
 const FirebaseLogin = (props: Props) => {
-    const { isLoggedIn } = useContext(LoginContext);
+    const { isLoggedIn, userId } = useContext(LoginContext);
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
-            props.setLoginStatus(!!user);
+            if (user) {
+                props.setLoginStatus(true, user.uid);
+            } else {
+                props.setLoginStatus(false, '');
+            }
         });
     });
 
     return isLoggedIn ? (
-        <StyledButton
-            onClick={() => {
-                firebase.auth().signOut();
-            }}
-        >
-            Sign out
-        </StyledButton>
+        <StyledMenu>
+            <StyledButton
+                onClick={() => {
+                    firebase.auth().signOut();
+                }}
+            >
+                Sign out
+            </StyledButton>
+            <UserMenu userId={userId} />
+        </StyledMenu>
     ) : (
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     );
