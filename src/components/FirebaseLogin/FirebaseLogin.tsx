@@ -1,6 +1,6 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Dispatch, SetStateAction } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import LoginContext from '../../shared/loginContext';
 import styled from 'styled-components';
 import UserMenu from '../UserMenu/UserMenu';
@@ -29,6 +29,7 @@ const StyledMenu = styled.div`
 
 interface Props {
     setLoginStatus: (value: boolean, id: string) => void;
+    setPopupVisibility: Dispatch<SetStateAction<boolean>>;
 }
 
 const uiConfig = {
@@ -55,9 +56,9 @@ const FirebaseLogin = (props: Props) => {
     const { isLoggedIn, userId } = useContext(LoginContext);
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
-            if (user) {
+            if (user && !isLoggedIn) {
                 props.setLoginStatus(true, user.uid);
-            } else {
+            } else if (!isLoggedIn) {
                 props.setLoginStatus(false, '');
             }
         });
@@ -73,6 +74,7 @@ const FirebaseLogin = (props: Props) => {
                 Sign out
             </StyledButton>
             <UserMenu userId={userId} />
+            <button onClick={() => props.setPopupVisibility(true)}> Przeglądaj </button>
         </StyledMenu>
     ) : (
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
