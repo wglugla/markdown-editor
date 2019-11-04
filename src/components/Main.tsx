@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import Header from './Header/Header';
-import Editor from './Editor/Editor';
-import Preview from './Preview/Preview';
-import { ModeContext, modes } from '../shared/ModeContext';
-import { StyledToggler, Container } from './styled.js';
-import LoginContext from '../shared/loginContext';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
-import DocumentsLibrary from './DocumentsLibrary/DocumentsLibrary';
+import React, { useState } from 'react';
+import LoginContext from '../shared/loginContext';
+import { ModeContext, modes } from '../shared/ModeContext';
+import Documents from './Documents/Documents';
+import Editor from './Editor/Editor';
+import Header from './Header/Header';
+import Preview from './Preview/Preview';
+import { Container, StyledToggler } from './styled.js';
 
-export default function Main() {
+interface Document {
+    content: string;
+    title: string;
+}
+
+const Main = () => {
     const [viewMode, setViewMode] = useState(modes.editor);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState('');
@@ -27,24 +32,6 @@ export default function Main() {
         setTitle(document.title);
     };
 
-    interface Document {
-        content: string;
-        title: string;
-    }
-
-    // const saveDocument = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     const db = firebase.firestore();
-    //     db.collection(`users/${userId}/articles`)
-    //         .doc()
-    //         .set({
-    //             title: title,
-    //             content: buffer
-    //         })
-    //         .then(() => console.log('zapisano'))
-    //         .catch(e => console.log(`error: ${e}`));
-    // }
-
     const setMode = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setViewMode(prev => (prev === modes.editor ? modes.preview : modes.editor));
@@ -61,7 +48,7 @@ export default function Main() {
             });
             setDocuments(userDocuments);
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 
@@ -74,25 +61,19 @@ export default function Main() {
         }
     };
 
-    console.log(libraryVisiblity);
-
     return (
-        <>
-            <LoginContext.Provider value={{ isLoggedIn, userId }}>
-                <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
-                <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>
-                <ModeContext.Provider value={viewMode}>
-                    {libraryVisiblity && <DocumentsLibrary setVisibility={setLibraryVisibility} docs={documents} />}
-                    <Container>
-                        <Editor
-                            changeBuffer={changeBuffer}
-                            distanceFromTop={scrollTop}
-                            changeScrollTop={changeScrollTop}
-                        />
-                        <Preview value={buffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
-                    </Container>
-                </ModeContext.Provider>
-            </LoginContext.Provider>
-        </>
+        <LoginContext.Provider value={{ isLoggedIn, userId }}>
+            <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
+            <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>
+            <ModeContext.Provider value={viewMode}>
+                {libraryVisiblity && <Documents setVisibility={setLibraryVisibility} docs={documents} />}
+                <Container>
+                    <Editor changeBuffer={changeBuffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
+                    <Preview value={buffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
+                </Container>
+            </ModeContext.Provider>
+        </LoginContext.Provider>
     );
-}
+};
+
+export default Main;

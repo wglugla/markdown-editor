@@ -1,8 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect, useState, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { ModeContext } from '../../shared/ModeContext';
 import Tools from '../Tools/Tools';
 import { StyledTextarea } from './EditorStyle';
-import { ModeContext } from '../../shared/ModeContext';
-import styled from 'styled-components';
 
 export interface Props {
     changeBuffer: (newContent: string) => void;
@@ -44,7 +44,7 @@ const Textarea = React.forwardRef((props: RefProps, ref: any) => {
     );
 });
 
-export default function Editor(props: Props) {
+const Editor = (props: Props) => {
     const [editorContent, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
@@ -124,4 +124,6 @@ export default function Editor(props: Props) {
             />
         </StyledForm>
     );
-}
+};
+
+export default Editor;

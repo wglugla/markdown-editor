@@ -1,8 +1,8 @@
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import React, { Dispatch, SetStateAction, useEffect, useState, useContext } from 'react';
-import { StyledInlineCode } from './PreviewStyle';
 import styled from 'styled-components';
 import { ModeContext } from '../../shared/ModeContext';
+import { StyledInlineCode } from './PreviewStyle';
 
 const PreviewView = styled.div<{ block: boolean }>`
     visibility: ${props => (props.block ? 'visible' : 'hidden')};
@@ -31,7 +31,7 @@ export interface Props {
     changeScrollTop: Dispatch<SetStateAction<number>>;
 }
 
-export default function Preview(props: Props) {
+const Preview = (props: Props) => {
     const [itemRefs] = useState<HTMLDivElement[]>([]);
 
     useEffect(() => {
@@ -49,4 +49,6 @@ export default function Preview(props: Props) {
             <ReactMarkdown source={props.value} renderers={{ inlineCode: StyledInlineCode }} />
         </PreviewView>
     );
-}
+};
+
+export default Preview;

@@ -1,31 +1,9 @@
-import React, { useEffect, useContext, Dispatch, SetStateAction } from 'react';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import LoginContext from '../../shared/loginContext';
-import styled from 'styled-components';
-import UserMenu from '../UserMenu/UserMenu';
-
-const StyledButton = styled.button`
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    height: auto;
-    line-height: normal;
-    min-height: 40px;
-    padding: 0.7rem 1rem;
-    margin: 1rem 0;
-    text-align: center;
-    color: #ffffff;
-    background-color: #333;
-    font-size: 14px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-`;
-
-const StyledMenu = styled.div`
-    display: flex;
-    align-items: center;
-`;
+import { StyledButton, StyledMenu } from './LoginMenuStyle';
 
 interface Props {
     setLoginStatus: (value: boolean, id: string) => void;
@@ -73,7 +51,6 @@ const FirebaseLogin = (props: Props) => {
             >
                 Sign out
             </StyledButton>
-            <UserMenu userId={userId} />
             <button onClick={() => props.setPopupVisibility(true)}> Przeglądaj </button>
         </StyledMenu>
     ) : (

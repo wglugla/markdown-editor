@@ -8,7 +8,7 @@ interface Props {
     cursonBackNumber: number;
 }
 
-export default function Tool(props: Props) {
+const Tool = (props: Props) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         props.styleFunction(props.content, props.cursonBackNumber);
@@ -19,4 +19,6 @@ export default function Tool(props: Props) {
             <Icon src={props.icon} alt="icon" />
         </StyledButton>
     );
-}
+};
+
+export default Tool;
