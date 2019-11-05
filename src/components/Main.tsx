@@ -3,6 +3,7 @@ import 'firebase/firestore';
 import React, { useState } from 'react';
 import LoginContext from '../shared/loginContext';
 import { ModeContext, modes } from '../shared/ModeContext';
+import DocumentContext from '../shared/DocumentContext';
 import Documents from './Documents/Documents';
 import Editor from './Editor/Editor';
 import Header from './Header/Header';
@@ -23,6 +24,7 @@ const Main = () => {
     const [title, setTitle] = useState('');
     const [libraryVisiblity, setLibraryVisibility] = useState(false);
     const [documents, setDocuments] = useState(new Array<Document>());
+    const [documentId, setDocumentId] = useState(0);
 
     const changeBuffer = (newBuffer: string) => {
         setBuffer(newBuffer);
@@ -61,18 +63,38 @@ const Main = () => {
         }
     };
 
+    const createNewDocument = async () => {
+        const db = firebase.firestore();
+        try {
+            const newContent = await db.collection(`users/${userId}/articles`).add({
+                content: 'New content',
+                title: 'New document'
+            });
+            await openLibrary(userId);
+            console.log(newContent);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
-        <LoginContext.Provider value={{ isLoggedIn, userId }}>
-            <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
-            <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>
-            <ModeContext.Provider value={viewMode}>
-                {libraryVisiblity && <Documents setVisibility={setLibraryVisibility} docs={documents} />}
-                <Container>
-                    <Editor changeBuffer={changeBuffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
-                    <Preview value={buffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
-                </Container>
-            </ModeContext.Provider>
-        </LoginContext.Provider>
+        <DocumentContext.Provider value={{ documentId, createNewDocument }}>
+            <LoginContext.Provider value={{ isLoggedIn, userId }}>
+                <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
+                <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>
+                <ModeContext.Provider value={viewMode}>
+                    {libraryVisiblity && <Documents setVisibility={setLibraryVisibility} docs={documents} />}
+                    <Container>
+                        <Editor
+                            changeBuffer={changeBuffer}
+                            distanceFromTop={scrollTop}
+                            changeScrollTop={changeScrollTop}
+                        />
+                        <Preview value={buffer} distanceFromTop={scrollTop} changeScrollTop={changeScrollTop} />
+                    </Container>
+                </ModeContext.Provider>
+            </LoginContext.Provider>
+        </DocumentContext.Provider>
     );
 };
 

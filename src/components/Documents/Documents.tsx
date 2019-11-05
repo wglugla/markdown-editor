@@ -1,5 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { Container, StyledLi, StyledList } from './DocumentsStyle';
+import DocumentContext from '../../shared/DocumentContext';
 
 interface Document {
     title: string;
@@ -13,9 +14,14 @@ interface Props {
 
 const Documents = (props: Props) => {
     const { docs, setVisibility } = props;
+    const { createNewDocument } = useContext(DocumentContext);
+
     return (
         <Container>
             <StyledList>
+                <StyledLi>
+                    <button onClick={createNewDocument}> Utwórz nowy </button>
+                </StyledLi>
                 {docs.map((doc, i) => {
                     return (
                         <StyledLi key={i}>
