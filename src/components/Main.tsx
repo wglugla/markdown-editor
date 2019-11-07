@@ -73,7 +73,6 @@ const Main = () => {
                 content: 'New content',
                 title: 'New document'
             });
-            // await openLibrary(userId);
             setDocumentId(newContent.id);
             changeBuffer('New content');
             setDocumentMode('firebase');
@@ -97,9 +96,24 @@ const Main = () => {
         }
     };
 
+    const saveDocument = async () => {
+        const db = firebase.firestore();
+        try {
+            await db
+                .collection(`users/${userId}/articles/`)
+                .doc(`${documentId}`)
+                .set({
+                    title: title,
+                    content: buffer
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <DocumentContext.Provider
-            value={{ documentMode, documentId, createNewDocument, loadDocument, buffer, changeBuffer }}
+            value={{ documentMode, documentId, createNewDocument, loadDocument, saveDocument, buffer, changeBuffer }}
         >
             <LoginContext.Provider value={{ isLoggedIn, userId }}>
                 <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>

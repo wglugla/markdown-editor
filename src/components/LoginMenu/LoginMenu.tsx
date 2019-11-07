@@ -3,6 +3,7 @@ import 'firebase/auth';
 import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import LoginContext from '../../shared/loginContext';
+import DocumentContext from '../../shared/DocumentContext';
 import { StyledButton, StyledMenu } from './LoginMenuStyle';
 
 interface Props {
@@ -31,7 +32,8 @@ if (!firebase.apps.length) {
 }
 
 const FirebaseLogin = (props: Props) => {
-    const { isLoggedIn, userId } = useContext(LoginContext);
+    const { isLoggedIn } = useContext(LoginContext);
+    const { saveDocument } = useContext(DocumentContext);
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
             if (user && !isLoggedIn) {
@@ -52,6 +54,7 @@ const FirebaseLogin = (props: Props) => {
                 Sign out
             </StyledButton>
             <button onClick={() => props.setPopupVisibility(true)}> Przeglądaj </button>
+            <button onClick={() => saveDocument()}> Zapisz plik </button>
         </StyledMenu>
     ) : (
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
