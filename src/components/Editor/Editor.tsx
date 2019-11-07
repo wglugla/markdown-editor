@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeContext } from '../../shared/ModeContext';
+import DocumentContext from '../../shared/DocumentContext';
 import Tools from '../Tools/Tools';
 import { StyledTextarea } from './EditorStyle';
 
@@ -45,13 +46,19 @@ const Textarea = React.forwardRef((props: RefProps, ref: any) => {
 });
 
 const Editor = (props: Props) => {
-    const [editorContent, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
+    const { documentMode } = useContext(DocumentContext);
+    const localStorageSource = documentMode == 'local' ? 'markdownEditorContent' : 'firebaseContent';
+    const [editorContent, setValue] = useState(localStorage.getItem(localStorageSource) || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
     /*eslint no-array-constructor: 0*/
     const [itemRefs, setItemRefs] = useState(new Array());
 
     const [halfStyleLength, setHalfStyleLength] = useState(0);
+
+    useEffect(() => {
+        setValue(localStorage.getItem(localStorageSource) || '');
+    }, [documentMode]);
 
     useEffect(() => {
         if (itemRefs[0]) {
@@ -64,7 +71,7 @@ const Editor = (props: Props) => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('markdownEditorContent', editorContent);
+        localStorage.setItem(localStorageSource, editorContent);
         props.changeBuffer(editorContent);
         let currentPosition = cursorPosition + halfStyleLength;
         if (itemRefs[0]) {

@@ -3,6 +3,7 @@ import { Container, StyledLi, StyledList } from './DocumentsStyle';
 import DocumentContext from '../../shared/DocumentContext';
 
 interface Document {
+    id: string;
     title: string;
     content: string;
 }
@@ -14,7 +15,11 @@ interface Props {
 
 const Documents = (props: Props) => {
     const { docs, setVisibility } = props;
-    const { createNewDocument } = useContext(DocumentContext);
+    const { createNewDocument, loadDocument } = useContext(DocumentContext);
+
+    const loadDoc = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        await loadDocument(e.currentTarget.value);
+    };
 
     return (
         <Container>
@@ -24,8 +29,10 @@ const Documents = (props: Props) => {
                 </StyledLi>
                 {docs.map((doc, i) => {
                     return (
-                        <StyledLi key={i}>
-                            <h3>{doc.title}</h3>
+                        <StyledLi key={doc.id}>
+                            <button onClick={loadDoc} value={doc.id}>
+                                {doc.title}
+                            </button>
                         </StyledLi>
                     );
                 })}

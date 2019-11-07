@@ -11,6 +11,7 @@ import Preview from './Preview/Preview';
 import { Container, StyledToggler } from './styled.js';
 
 interface Document {
+    id: string;
     content: string;
     title: string;
 }
@@ -24,7 +25,8 @@ const Main = () => {
     const [title, setTitle] = useState('');
     const [libraryVisiblity, setLibraryVisibility] = useState(false);
     const [documents, setDocuments] = useState(new Array<Document>());
-    const [documentId, setDocumentId] = useState(0);
+    const [documentId, setDocumentId] = useState('');
+    const [documentMode, setDocumentMode] = useState('local');
 
     const changeBuffer = (newBuffer: string) => {
         setBuffer(newBuffer);
@@ -46,6 +48,7 @@ const Main = () => {
             const userDocuments: Array<Document> = [];
             snapshot.docs.forEach(doc => {
                 let newEl = doc.data() as Document;
+                newEl.id = doc.id;
                 userDocuments.push(newEl);
             });
             setDocuments(userDocuments);
@@ -70,15 +73,34 @@ const Main = () => {
                 content: 'New content',
                 title: 'New document'
             });
-            await openLibrary(userId);
-            console.log(newContent);
+            // await openLibrary(userId);
+            setDocumentId(newContent.id);
+            changeBuffer('New content');
+            setDocumentMode('firebase');
+            localStorage.setItem('firebaseContent', 'newContent');
+            setLibraryVisibility(false);
         } catch (e) {
             console.error(e);
         }
     };
 
+    const loadDocument = async (id: string) => {
+        const currentDocument = documents.filter(doc => doc.id === id);
+        if (currentDocument.length) {
+            const { title, content, id } = currentDocument[0];
+            setDocumentId(id);
+            changeBuffer(content);
+            setDocumentMode('firebase');
+            setTitle(title);
+            localStorage.setItem('firebaseContent', content);
+            setLibraryVisibility(false);
+        }
+    };
+
     return (
-        <DocumentContext.Provider value={{ documentId, createNewDocument }}>
+        <DocumentContext.Provider
+            value={{ documentMode, documentId, createNewDocument, loadDocument, buffer, changeBuffer }}
+        >
             <LoginContext.Provider value={{ isLoggedIn, userId }}>
                 <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
                 <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>

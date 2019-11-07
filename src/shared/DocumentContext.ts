@@ -1,8 +1,12 @@
 import React from 'react';
 
 const DocumentContext = React.createContext({
-    documentId: 0,
-    createNewDocument: () => new Promise(Promise.resolve)
+    documentMode: 'local',
+    documentId: '',
+    createNewDocument: () => new Promise(Promise.resolve),
+    loadDocument: (id: string) => new Promise(Promise.resolve),
+    buffer: '',
+    changeBuffer: (newBuffer: string) => {}
 });
 
 export default DocumentContext;
