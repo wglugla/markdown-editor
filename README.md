@@ -1,3 +1,3 @@
 Markdown editor with live preview (React, Typescript)
 
-[DEMO HERE](https://zealous-banach-f0e87e.netlify.com/)
+Demo [here](https://awesome-goldberg-e3b5b0.netlify.com/)
