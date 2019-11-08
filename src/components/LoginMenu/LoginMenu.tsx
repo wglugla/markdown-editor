@@ -4,7 +4,15 @@ import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import LoginContext from '../../shared/loginContext';
 import DocumentContext from '../../shared/DocumentContext';
-import { StyledButton, StyledMenu } from './LoginMenuStyle';
+import { StyledMenu } from './LoginMenuStyle';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+    button: {
+        margin: '0.5rem'
+    }
+}));
 
 interface Props {
     setLoginStatus: (value: boolean, id: string) => void;
@@ -44,17 +52,31 @@ const FirebaseLogin = (props: Props) => {
         });
     });
 
+    const classes = useStyles();
+
     return isLoggedIn ? (
         <StyledMenu>
-            <StyledButton
+            <Button
+                variant="outlined"
+                color="secondary"
+                className={classes.button}
                 onClick={() => {
                     firebase.auth().signOut();
                 }}
             >
                 Sign out
-            </StyledButton>
-            <button onClick={() => props.setPopupVisibility(true)}> Przeglądaj </button>
-            <button onClick={() => saveDocument()}> Zapisz plik </button>
+            </Button>
+            <Button
+                variant="outlined"
+                color="inherit"
+                className={classes.button}
+                onClick={() => props.setPopupVisibility(true)}
+            >
+                Przeglądaj
+            </Button>
+            <Button variant="outlined" color="inherit" className={classes.button} onClick={() => saveDocument()}>
+                Zapisz plik
+            </Button>
         </StyledMenu>
     ) : (
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />

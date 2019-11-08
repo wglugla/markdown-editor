@@ -58,6 +58,9 @@ export const StyledLink = styled.a`
 `;
 
 export const LogoContainer = styled.div`
+    @media (max-width: 900px) {
+        margin-bottom: 1rem;
+    }
     display: flex;
     align-items: center;
 `;

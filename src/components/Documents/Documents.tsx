@@ -1,6 +1,26 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { Container, StyledLi, StyledList } from './DocumentsStyle';
 import DocumentContext from '../../shared/DocumentContext';
+import { makeStyles } from '@material-ui/core/styles';
+import { Fab, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+
+const useStyles = makeStyles(theme => ({
+    fab: {
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem'
+    },
+    paper: {},
+    button: {
+        background: 'none',
+        margin: '0',
+        width: '100%',
+        height: '100%',
+        padding: '1rem'
+    }
+}));
 
 interface Document {
     id: string;
@@ -21,23 +41,37 @@ const Documents = (props: Props) => {
         await loadDocument(e.currentTarget.value);
     };
 
+    const classes = useStyles();
+
     return (
         <Container>
             <StyledList>
                 <StyledLi>
-                    <button onClick={createNewDocument}> Utwórz nowy </button>
+                    <Fab color="primary" aria-label="add" onClick={createNewDocument}>
+                        <AddIcon />
+                    </Fab>
                 </StyledLi>
                 {docs.map((doc, i) => {
                     return (
                         <StyledLi key={doc.id}>
-                            <button onClick={loadDoc} value={doc.id}>
-                                {doc.title}
+                            <button onClick={loadDoc} value={doc.id} className={classes.button}>
+                                <Typography variant="subtitle2" component="h3">
+                                    {doc.title}
+                                </Typography>
                             </button>
                         </StyledLi>
                     );
                 })}
             </StyledList>
-            <button onClick={() => setVisibility(false)}> Zamknij </button>
+            <Fab
+                color="secondary"
+                aria-label="close"
+                size="small"
+                className={classes.fab}
+                onClick={() => setVisibility(false)}
+            >
+                <CloseIcon />
+            </Fab>
         </Container>
     );
 };

@@ -9,6 +9,7 @@ export interface Props {
     changeBuffer: (newContent: string) => void;
     distanceFromTop: Number;
     changeScrollTop: Dispatch<SetStateAction<number>>;
+    value: string;
 }
 
 export interface RefProps {
@@ -47,7 +48,7 @@ const Textarea = React.forwardRef((props: RefProps, ref: any) => {
 
 const Editor = (props: Props) => {
     const { documentMode } = useContext(DocumentContext);
-    const localStorageSource = documentMode == 'local' ? 'markdownEditorContent' : 'firebaseContent';
+    const localStorageSource = documentMode === 'local' ? 'markdownEditorContent' : 'firebaseContent';
     const [editorContent, setValue] = useState(localStorage.getItem(localStorageSource) || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
@@ -72,7 +73,7 @@ const Editor = (props: Props) => {
 
     useEffect(() => {
         localStorage.setItem(localStorageSource, editorContent);
-        props.changeBuffer(editorContent);
+        // props.changeBuffer(editorContent);
         let currentPosition = cursorPosition + halfStyleLength;
         if (itemRefs[0]) {
             itemRefs[0].setSelectionRange(currentPosition, currentPosition);
@@ -122,7 +123,7 @@ const Editor = (props: Props) => {
             <Tools addStyle={addStyle} />
             <Textarea
                 ref={inputRef}
-                editorContent={editorContent}
+                editorContent={props.value}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onKeyDown={handleCursorMove}

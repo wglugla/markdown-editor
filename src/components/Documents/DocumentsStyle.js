@@ -9,11 +9,12 @@ export const Container = styled.div`
     height: 90vh;
     background: #333333;
     z-index: 100;
+    padding: 2rem 4rem;
+    box-sizing: border-box;
 `;
 
 export const StyledLi = styled.li`
-    min-width: 200px;
-    width: 30%;
+    width: 200px;
     height: 100px;
     display: flex;
     justify-content: center;

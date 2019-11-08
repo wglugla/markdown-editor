@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginContext from '../shared/loginContext';
 import { ModeContext, modes } from '../shared/ModeContext';
 import DocumentContext from '../shared/DocumentContext';
@@ -27,6 +27,12 @@ const Main = () => {
     const [documents, setDocuments] = useState(new Array<Document>());
     const [documentId, setDocumentId] = useState('');
     const [documentMode, setDocumentMode] = useState('local');
+
+    useEffect(() => {
+        if (documentMode === 'local') {
+            setBuffer(localStorage.getItem('markdownEditorContent') || '');
+        }
+    }, []);
 
     const changeBuffer = (newBuffer: string) => {
         setBuffer(newBuffer);
@@ -59,9 +65,11 @@ const Main = () => {
 
     const setLoginStatus = async (value: boolean, id: string) => {
         setIsLoggedIn(value);
+        if (!value) {
+            setDocumentMode('local');
+        }
         if (value) {
             setUserId(id);
-            setLibraryVisibility(value);
             await openLibrary(id);
         }
     };
@@ -113,7 +121,15 @@ const Main = () => {
 
     return (
         <DocumentContext.Provider
-            value={{ documentMode, documentId, createNewDocument, loadDocument, saveDocument, buffer, changeBuffer }}
+            value={{
+                documentMode,
+                documentId,
+                createNewDocument,
+                loadDocument,
+                saveDocument,
+                buffer,
+                changeBuffer
+            }}
         >
             <LoginContext.Provider value={{ isLoggedIn, userId }}>
                 <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
@@ -122,6 +138,7 @@ const Main = () => {
                     {libraryVisiblity && <Documents setVisibility={setLibraryVisibility} docs={documents} />}
                     <Container>
                         <Editor
+                            value={buffer}
                             changeBuffer={changeBuffer}
                             distanceFromTop={scrollTop}
                             changeScrollTop={changeScrollTop}
