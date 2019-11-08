@@ -7,9 +7,11 @@ export const Icon = styled.img`
 export const StyledButton = styled.button`
     background: none;
     border: none;
-    height: 5vh;
-    padding: 0.7rem;
+    width: 24px;
+    height: 24px;
     box-sizing: border-box;
+    margin: 0 0.3rem;
+    padding: 0.3rem;
     cursor: pointer;
     :hover,
     :focus {
