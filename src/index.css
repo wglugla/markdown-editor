@@ -17,3 +17,8 @@ code {
     width: 100%;
     box-sizing: border-box;
 }
+
+.firebaseui-card-content,
+.firebaseui-card-footer {
+    padding: 0 1rem !important;
+}

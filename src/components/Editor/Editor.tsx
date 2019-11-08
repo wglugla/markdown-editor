@@ -1,13 +1,15 @@
-import React, { Dispatch, SetStateAction, useEffect, useState, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { ModeContext } from '../../shared/ModeContext';
+import DocumentContext from '../../shared/DocumentContext';
 import Tools from '../Tools/Tools';
 import { StyledTextarea } from './EditorStyle';
-import { ModeContext } from '../../shared/ModeContext';
-import styled from 'styled-components';
 
 export interface Props {
     changeBuffer: (newContent: string) => void;
     distanceFromTop: Number;
     changeScrollTop: Dispatch<SetStateAction<number>>;
+    value: string;
 }
 
 export interface RefProps {
@@ -44,14 +46,20 @@ const Textarea = React.forwardRef((props: RefProps, ref: any) => {
     );
 });
 
-export default function Editor(props: Props) {
-    const [editorContent, setValue] = useState(localStorage.getItem('markdownEditorContent') || '');
+const Editor = (props: Props) => {
+    const { documentMode } = useContext(DocumentContext);
+    const localStorageSource = documentMode === 'local' ? 'markdownEditorContent' : 'firebaseContent';
+    const [editorContent, setValue] = useState(localStorage.getItem(localStorageSource) || '');
 
     const [cursorPosition, setCursorPosition] = useState(0);
     /*eslint no-array-constructor: 0*/
     const [itemRefs, setItemRefs] = useState(new Array());
 
     const [halfStyleLength, setHalfStyleLength] = useState(0);
+
+    useEffect(() => {
+        setValue(localStorage.getItem(localStorageSource) || '');
+    }, [documentMode]);
 
     useEffect(() => {
         if (itemRefs[0]) {
@@ -64,8 +72,8 @@ export default function Editor(props: Props) {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('markdownEditorContent', editorContent);
-        props.changeBuffer(editorContent);
+        localStorage.setItem(localStorageSource, editorContent);
+        // props.changeBuffer(editorContent);
         let currentPosition = cursorPosition + halfStyleLength;
         if (itemRefs[0]) {
             itemRefs[0].setSelectionRange(currentPosition, currentPosition);
@@ -115,7 +123,7 @@ export default function Editor(props: Props) {
             <Tools addStyle={addStyle} />
             <Textarea
                 ref={inputRef}
-                editorContent={editorContent}
+                editorContent={props.value}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onKeyDown={handleCursorMove}
@@ -124,4 +132,6 @@ export default function Editor(props: Props) {
             />
         </StyledForm>
     );
-}
+};
+
+export default Editor;

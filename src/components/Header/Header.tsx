@@ -1,16 +1,23 @@
-import React from 'react';
-import { StyledHeader, StyledLink, StyledList, StyledTitle } from './HeaderStyle';
+import React, { Dispatch, SetStateAction } from 'react';
+import Logo from '../../assets/images/markdown.png';
+import LoginMenu from '../LoginMenu/LoginMenu';
+import { LogoContainer, StyledHeader, StyledLogo, StyledTitle } from './HeaderStyle';
 
-export default function Header() {
+interface Props {
+    setLoginStatus: (value: boolean, id: string) => void;
+    setPopupVisibility: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header = (props: Props) => {
     return (
         <StyledHeader>
-            <StyledTitle> Markdown editor </StyledTitle>
-            <StyledList>
-                <li>
-                    <StyledLink href="https://github.com/wglugla"> My Github Account </StyledLink>
-                    <StyledLink href="https://github.com/wglugla/markdown-editor"> Repository </StyledLink>
-                </li>
-            </StyledList>
+            <LogoContainer>
+                <StyledLogo src={Logo} alt="" />
+                <StyledTitle> Markdown editor </StyledTitle>
+            </LogoContainer>
+            <LoginMenu setLoginStatus={props.setLoginStatus} setPopupVisibility={props.setPopupVisibility} />
         </StyledHeader>
     );
-}
+};
+
+export default Header;
