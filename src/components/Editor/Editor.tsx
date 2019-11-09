@@ -73,13 +73,16 @@ const Editor = (props: Props) => {
 
     useEffect(() => {
         localStorage.setItem(localStorageSource, editorContent);
-        // props.changeBuffer(editorContent);
         let currentPosition = cursorPosition + halfStyleLength;
         if (itemRefs[0]) {
             itemRefs[0].setSelectionRange(currentPosition, currentPosition);
         }
         setHalfStyleLength(0);
     }, [editorContent, itemRefs, cursorPosition, halfStyleLength, props]);
+
+    const updateWithStyle = (content: string) => {
+        props.changeBuffer(content);
+    };
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         let { value, selectionStart } = event.target;
@@ -93,6 +96,7 @@ const Editor = (props: Props) => {
         let back = editorContent.substr(cursorPosition, editorContent.length);
         setValue(`${front}${styleFormat} ${back}`);
         setHalfStyleLength(cursorBackNumber);
+        updateWithStyle(`${front}${styleFormat} ${back}`);
     };
     const handleCursorMove = (event: React.FormEvent<HTMLTextAreaElement>) => {
         const { selectionStart } = event.currentTarget;

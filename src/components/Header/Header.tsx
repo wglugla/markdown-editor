@@ -2,11 +2,9 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import Logo from '../../assets/images/markdown.png';
 import LoginMenu from '../LoginMenu/LoginMenu';
 import { LogoContainer, StyledHeader, StyledLogo, StyledTitle, TogglerCase } from './HeaderStyle';
-import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/icons/Menu';
 import Create from '@material-ui/icons/Create';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 interface Props {
     setLoginStatus: (value: boolean, id: string) => void;
