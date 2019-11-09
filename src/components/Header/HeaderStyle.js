@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const StyledHeader = styled.header`
     @media (max-width: 900px) {
-        padding: 1rem 0;
-        flex-direction: column;
+        padding: 0 1rem;
     }
     display: flex;
     justify-content: space-between;
@@ -58,13 +57,20 @@ export const StyledLink = styled.a`
 `;
 
 export const LogoContainer = styled.div`
-    @media (max-width: 900px) {
-        margin-bottom: 1rem;
-    }
     display: flex;
     align-items: center;
 `;
 
 export const StyledLogo = styled.img`
     width: 40px;
+`;
+
+export const TogglerCase = styled.div`
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    z-index: 100;
+    @media (min-width: 900px) {
+        display: none;
+    }
 `;
