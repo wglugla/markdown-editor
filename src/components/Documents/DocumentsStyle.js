@@ -11,6 +11,11 @@ export const Container = styled.div`
     z-index: 100;
     padding: 2rem 4rem;
     box-sizing: border-box;
+    @media (max-width: 900px) {
+        width: 100vw;
+        transform: 0;
+        overflow-y: scroll;
+    }
 `;
 
 export const StyledLi = styled.li`

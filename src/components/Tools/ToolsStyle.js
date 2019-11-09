@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const ToolsCase = styled.div`
     width: 100%;
-    padding: 0 1rem;
-    box-sizing: border-box;
+    height: 15px;
+    padding: 0.5rem 1rem;
     background: #ffffff;
     display: flex;
     align-items: center;

@@ -8,7 +8,7 @@ import Documents from './Documents/Documents';
 import Editor from './Editor/Editor';
 import Header from './Header/Header';
 import Preview from './Preview/Preview';
-import { Container, StyledToggler } from './styled.js';
+import { Container } from './styled.js';
 
 interface Document {
     id: string;
@@ -43,7 +43,6 @@ const Main = () => {
     };
 
     const setMode = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
         setViewMode(prev => (prev === modes.editor ? modes.preview : modes.editor));
     };
 
@@ -132,8 +131,11 @@ const Main = () => {
             }}
         >
             <LoginContext.Provider value={{ isLoggedIn, userId }}>
-                <Header setLoginStatus={setLoginStatus} setPopupVisibility={setLibraryVisibility}></Header>
-                <StyledToggler onClick={setMode}> Zmień widok </StyledToggler>
+                <Header
+                    setLoginStatus={setLoginStatus}
+                    setMode={setMode}
+                    setPopupVisibility={setLibraryVisibility}
+                ></Header>
                 <ModeContext.Provider value={viewMode}>
                     {libraryVisiblity && <Documents setVisibility={setLibraryVisibility} docs={documents} />}
                     <Container>
