@@ -19,16 +19,64 @@ interface Props {
 const Tools = (props: Props) => {
     return (
         <ToolsCase>
-            <Tool content="****" styleFunction={props.addStyle} cursonBackNumber={2} icon={iconBold} />
-            <Tool content="__" styleFunction={props.addStyle} cursonBackNumber={1} icon={iconItalic} />
-            <Tool content="~~~~" styleFunction={props.addStyle} cursonBackNumber={2} icon={iconStrike} />
-            <Tool content="# " styleFunction={props.addStyle} cursonBackNumber={2} icon={iconHeader} />
-            <Tool content="``" styleFunction={props.addStyle} cursonBackNumber={1} icon={iconCode} />
-            <Tool content="> " styleFunction={props.addStyle} cursonBackNumber={2} icon={iconQuote} />
-            <Tool content="* " styleFunction={props.addStyle} cursonBackNumber={2} icon={iconList} />
-            <Tool content="1. " styleFunction={props.addStyle} cursonBackNumber={3} icon={iconNumberedList} />
-            <Tool content="- [ ] " styleFunction={props.addStyle} cursonBackNumber={6} icon={iconChecklist} />
-            <Tool content="[](https://)" styleFunction={props.addStyle} cursonBackNumber={1} icon={iconChainLink} />
+            <Tool content="**" styleFunction={props.addStyle} cursonBackNumber={2} icon={iconBold} doubleStyle={true} />
+            <Tool
+                content="_"
+                styleFunction={props.addStyle}
+                cursonBackNumber={1}
+                icon={iconItalic}
+                doubleStyle={true}
+            />
+            <Tool
+                content="~~"
+                styleFunction={props.addStyle}
+                cursonBackNumber={2}
+                icon={iconStrike}
+                doubleStyle={true}
+            />
+            <Tool
+                content="# "
+                styleFunction={props.addStyle}
+                cursonBackNumber={2}
+                icon={iconHeader}
+                doubleStyle={false}
+            />
+            <Tool content="`" styleFunction={props.addStyle} cursonBackNumber={1} icon={iconCode} doubleStyle={true} />
+            <Tool
+                content="> "
+                styleFunction={props.addStyle}
+                cursonBackNumber={2}
+                icon={iconQuote}
+                doubleStyle={false}
+            />
+            <Tool
+                content="* "
+                styleFunction={props.addStyle}
+                cursonBackNumber={2}
+                icon={iconList}
+                doubleStyle={false}
+            />
+            <Tool
+                content="1. "
+                styleFunction={props.addStyle}
+                cursonBackNumber={3}
+                icon={iconNumberedList}
+                doubleStyle={false}
+            />
+            <Tool
+                content="- [ ] "
+                styleFunction={props.addStyle}
+                cursonBackNumber={6}
+                icon={iconChecklist}
+                doubleStyle={false}
+            />
+            <Tool
+                content="[](https://)"
+                styleFunction={props.addStyle}
+                cursonBackNumber={1}
+                icon={iconChainLink}
+                doubleStyle={false}
+            />
         </ToolsCase>
     );
 };

@@ -56,7 +56,6 @@ const FirebaseLogin = (props: Props) => {
 
     const classes = useStyles();
     const visibility = props.menuVisibility;
-    console.log(visibility);
     return (
         <MenuContainer visibility={visibility ? 1 : 0}>
             {isLoggedIn ? (
