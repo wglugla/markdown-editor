@@ -7,6 +7,7 @@ import DocumentContext from '../../shared/DocumentContext';
 import { StyledMenu, MenuContainer } from './LoginMenuStyle';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import NotificationSystem, { System } from 'react-notification-system';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -56,9 +57,10 @@ const FirebaseLogin = (props: Props) => {
 
     const classes = useStyles();
     const visibility = props.menuVisibility;
-    console.log(visibility);
+    let notificationSystem: React.RefObject<System> = React.createRef();
     return (
         <MenuContainer visibility={visibility ? 1 : 0}>
+            <NotificationSystem ref={notificationSystem} />
             {isLoggedIn ? (
                 <StyledMenu>
                     <Button
@@ -70,7 +72,7 @@ const FirebaseLogin = (props: Props) => {
                             firebase.auth().signOut();
                         }}
                     >
-                        Sign out
+                        Wyloguj się
                     </Button>
                     <Button
                         variant="outlined"
@@ -90,6 +92,12 @@ const FirebaseLogin = (props: Props) => {
                         onClick={() => {
                             props.toggleMenu();
                             saveDocument();
+                            if (notificationSystem.current) {
+                                notificationSystem.current.addNotification({
+                                    message: 'Dokument zapisany pomyślnie',
+                                    level: 'success'
+                                });
+                            }
                         }}
                     >
                         Zapisz plik

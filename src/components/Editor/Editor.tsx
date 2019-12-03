@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState, createRef } from 'react';
 import styled from 'styled-components';
 import { ModeContext } from '../../shared/ModeContext';
 import DocumentContext from '../../shared/DocumentContext';
@@ -7,7 +7,7 @@ import { StyledTextarea } from './EditorStyle';
 
 export interface Props {
     changeBuffer: (newContent: string) => void;
-    distanceFromTop: Number;
+    distanceFromTop: number;
     changeScrollTop: Dispatch<SetStateAction<number>>;
     value: string;
 }
@@ -31,88 +31,63 @@ const StyledForm = styled.form<{ block: boolean }>`
     }
 `;
 
-const Textarea = React.forwardRef((props: RefProps, ref: any) => {
-    return (
-        <StyledTextarea
-            ref={ref}
-            autoFocus
-            value={props.editorContent}
-            onBlur={props.onBlur}
-            onChange={props.onChange}
-            onKeyDown={props.onKeyDown}
-            onMouseUp={props.onMouseUp}
-            onScroll={props.onScroll}
-        />
-    );
-});
-
 const Editor = (props: Props) => {
+    const context = useContext(ModeContext);
     const { documentMode } = useContext(DocumentContext);
     const localStorageSource = documentMode === 'local' ? 'markdownEditorContent' : 'firebaseContent';
-    const [editorContent, setValue] = useState(localStorage.getItem(localStorageSource) || '');
-
-    const [cursorPosition, setCursorPosition] = useState(0);
-    /*eslint no-array-constructor: 0*/
-    const [itemRefs, setItemRefs] = useState(new Array());
-
-    const [halfStyleLength, setHalfStyleLength] = useState(0);
+    const [selectStart, setSelectStart] = useState(0);
+    const [selectEnd, setSelectEnd] = useState(0);
+    const [content, setContent] = useState(localStorage.getItem(localStorageSource) || '');
 
     useEffect(() => {
-        setValue(localStorage.getItem(localStorageSource) || '');
+        setContent(localStorage.getItem(localStorageSource) || '');
     }, [documentMode]);
 
     useEffect(() => {
-        if (itemRefs[0]) {
-            itemRefs[0].scrollTop = 0;
-        }
-    }, [itemRefs]);
+        localStorage.setItem(localStorageSource, content);
+        props.changeBuffer(content);
+    }, [content]);
+
+    let _textarea: React.RefObject<HTMLTextAreaElement> = createRef();
+
+    const addStyle = (shiftChanges: number, styleCode: string, doubleStyle: boolean) => {
+        addFocusOnTextarea();
+        setContent(prev => {
+            let newContent;
+            if (doubleStyle === true) {
+                newContent = `${prev.substr(0, selectStart)}${styleCode}${prev.substr(
+                    selectStart,
+                    selectEnd - selectStart
+                )}${styleCode}${prev.substr(selectEnd, prev.length - selectEnd)}`;
+            } else {
+                newContent = `${prev.substr(0, selectStart)}${styleCode}${prev.substr(
+                    selectStart,
+                    prev.length - selectStart
+                )}`;
+            }
+            setSelectStart(prev => prev + shiftChanges);
+            setSelectEnd(prev => prev + shiftChanges);
+            return newContent;
+        });
+    };
 
     useEffect(() => {
-        itemRefs[0].scrollTop = props.distanceFromTop;
+        if (_textarea.current) _textarea.current.setSelectionRange(selectStart, selectEnd);
+    });
+
+    useEffect(() => {
+        if (_textarea.current) _textarea.current.scrollTop = props.distanceFromTop;
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem(localStorageSource, editorContent);
-        let currentPosition = cursorPosition + halfStyleLength;
-        if (itemRefs[0]) {
-            itemRefs[0].setSelectionRange(currentPosition, currentPosition);
+    const setCursorPosition = (selectStart: number, selectEnd: number) => {
+        setSelectStart(selectStart || 0);
+        setSelectEnd(selectEnd || 0);
+    };
+
+    const addFocusOnTextarea = () => {
+        if (_textarea.current) {
+            _textarea.current.focus();
         }
-        setHalfStyleLength(0);
-    }, [editorContent, itemRefs, cursorPosition, halfStyleLength, props]);
-
-    const updateWithStyle = (content: string) => {
-        props.changeBuffer(content);
-    };
-
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        let { value, selectionStart } = event.target;
-        setValue(value);
-        props.changeBuffer(value);
-        setCursorPosition(selectionStart);
-    };
-
-    const addStyle = (styleFormat: string, cursorBackNumber: number) => {
-        let front = editorContent.substr(0, cursorPosition);
-        let back = editorContent.substr(cursorPosition, editorContent.length);
-        setValue(`${front}${styleFormat} ${back}`);
-        setHalfStyleLength(cursorBackNumber);
-        updateWithStyle(`${front}${styleFormat} ${back}`);
-    };
-    const handleCursorMove = (event: React.FormEvent<HTMLTextAreaElement>) => {
-        const { selectionStart } = event.currentTarget;
-        setCursorPosition(selectionStart);
-    };
-
-    function inputRef(ref: React.Ref<HTMLTextAreaElement>) {
-        let items = itemRefs;
-        items.push(ref);
-        setItemRefs(items);
-    }
-
-    const handleBlur = (event: React.FormEvent<HTMLTextAreaElement>) => {
-        event.currentTarget.select();
-        let currentPosition = cursorPosition + halfStyleLength;
-        event.currentTarget.setSelectionRange(currentPosition, currentPosition);
     };
 
     const handleScroll = (event: React.UIEvent<HTMLTextAreaElement>) => {
@@ -120,19 +95,32 @@ const Editor = (props: Props) => {
         props.changeScrollTop(scrollTop);
     };
 
-    const context = useContext(ModeContext);
-
     return (
         <StyledForm block={context.editorDisplay}>
             <Tools addStyle={addStyle} />
-            <Textarea
-                ref={inputRef}
-                editorContent={props.value}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                onKeyDown={handleCursorMove}
-                onMouseUp={handleCursorMove}
+            <StyledTextarea
+                ref={_textarea}
+                value={content}
+                onChange={e => {
+                    const { selectionStart, selectionEnd } = e.target;
+                    setCursorPosition(selectionStart, selectionEnd);
+                    setContent(e.target.value);
+                }}
+                onFocus={e => {
+                    const { selectionStart, selectionEnd } = e.target;
+                    setCursorPosition(selectionStart, selectionEnd);
+                    setContent(e.target.value);
+                }}
+                onKeyUp={e => {
+                    const { selectionStart, selectionEnd } = e.currentTarget;
+                    setCursorPosition(selectionStart, selectionEnd);
+                }}
+                onMouseUp={e => {
+                    const { selectionStart, selectionEnd } = e.currentTarget;
+                    setCursorPosition(selectionStart, selectionEnd);
+                }}
                 onScroll={handleScroll}
+                autoFocus
             />
         </StyledForm>
     );
